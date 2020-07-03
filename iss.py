@@ -27,6 +27,15 @@ Use this API to query the next pass - http://api.open-notify.org/iss-pass.json
 
 __author__ = 'Kevin Blount'
 
+import requests
+
+
+def get_astronauts():
+    pass
+
+
+def get_coordinates():
+    pass
 
 
 def main():
