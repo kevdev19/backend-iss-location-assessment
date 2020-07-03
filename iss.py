@@ -28,6 +28,7 @@ Use this API to query the next pass - http://api.open-notify.org/iss-pass.json
 __author__ = 'Kevin Blount'
 
 import requests
+from turtle import Screen, Turtle
 
 
 def get_astronauts():
@@ -60,10 +61,17 @@ def get_coordinates():
     print(f'Timestamp: {time_stamp}')
 
 
+def create_turtle_graphic():
+    print("Turtle Graphic function")
+    s = turtle.getscreen()
+    print(s)
+
+
 def main():
     # print("This is method main")
     # print(get_astronauts())
-    print(get_coordinates())
+    # print(get_coordinates())
+    print(create_turtle_graphic())
 
 
 if __name__ == '__main__':
