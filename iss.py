@@ -31,7 +31,16 @@ import requests
 
 
 def get_astronauts():
-    pass
+    url = "http://api.open-notify.org/astros.json"
+    response = requests.get(url)
+    print(response.text)
+    people = response.json()["people"]
+    total_astronauts = response.json()["number"]
+
+    # List Comprehension of astronauts
+    astronauts = [astronaut["name"] for astronaut in people]
+    print(astronauts)
+    print(total_astronauts)
 
 
 def get_coordinates():
@@ -40,6 +49,7 @@ def get_coordinates():
 
 def main():
     print("This is method main")
+    print(get_astronauts())
 
 
 if __name__ == '__main__':
