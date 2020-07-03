@@ -6,7 +6,7 @@ List of astronauts - full names, spacecraft, total # of astronauts in
 Use this API - http://api.open-notify.org/astros.json
 
 Part B
-Obtain current geographic coordinates(lat/lon) of space station and 
+Obtain current geographic coordinates(lat/lon) of space station and
 time stamp.
 Use this API - http://api.open-notify.org/iss-now.json
 
@@ -28,13 +28,11 @@ Use this API to query the next pass - http://api.open-notify.org/iss-pass.json
 __author__ = 'Kevin Blount'
 
 import requests
-import itertools
 
 
 def get_astronauts():
     url = "http://api.open-notify.org/astros.json"
     response = requests.get(url)
-    print(response.text)
     people = response.json()["people"]
     total_astronauts = response.json()["number"]
 
@@ -46,16 +44,26 @@ def get_astronauts():
     for astronaut in astronauts:
         for space_craft in space_crafts:
             print(f"{astronaut} : {space_craft}")
+
     print(f"Total # of astronauts: {total_astronauts}")
 
 
 def get_coordinates():
-    pass
+    url = "http://api.open-notify.org/iss-now.json"
+    response = requests.get(url)
+    coordinates = response.json()["iss_position"]
+    time_stamp = response.json()["timestamp"]
+    print(response.text)
+    print(
+        f'Latitude: {coordinates["latitude"]}\nLongitude: {coordinates["longitude"]}')
+    # TODO - Format Timestamp
+    print(f'Timestamp: {time_stamp}')
 
 
 def main():
-    print("This is method main")
-    print(get_astronauts())
+    # print("This is method main")
+    # print(get_astronauts())
+    print(get_coordinates())
 
 
 if __name__ == '__main__':
