@@ -28,6 +28,7 @@ Use this API to query the next pass - http://api.open-notify.org/iss-pass.json
 __author__ = 'Kevin Blount'
 
 import requests
+import itertools
 
 
 def get_astronauts():
@@ -39,8 +40,13 @@ def get_astronauts():
 
     # List Comprehension of astronauts
     astronauts = [astronaut["name"] for astronaut in people]
-    print(astronauts)
-    print(total_astronauts)
+    space_crafts = [craft["craft"] for craft in people]
+
+    # TODO for loop prints duplicates
+    for astronaut in astronauts:
+        for space_craft in space_crafts:
+            print(f"{astronaut} : {space_craft}")
+    print(f"Total # of astronauts: {total_astronauts}")
 
 
 def get_coordinates():
