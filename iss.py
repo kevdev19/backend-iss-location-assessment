@@ -28,8 +28,9 @@ Use this API to query the next pass - http://api.open-notify.org/iss-pass.json
 __author__ = 'Kevin Blount'
 
 
+
 def main():
-    pass
+    print("This is method main")
 
 
 if __name__ == '__main__':
