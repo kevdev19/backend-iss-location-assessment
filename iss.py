@@ -28,6 +28,7 @@ Use this API to query the next pass - http://api.open-notify.org/iss-pass.json
 __author__ = 'Kevin Blount'
 
 import requests
+from tabulate import tabulate
 from turtle import Screen, Turtle
 
 
@@ -37,16 +38,23 @@ def get_astronauts():
     people = response.json()["people"]
     total_astronauts = response.json()["number"]
 
+    header = people[0].keys()
+    rows = [x.values() for x in people]
+    table = tabulate(rows, header)
+
+    return f'{table}\n\nTotal Astronauts: {total_astronauts}'
+
     # List Comprehension of astronauts
-    astronauts = [astronaut["name"] for astronaut in people]
-    space_crafts = [craft["craft"] for craft in people]
+    # astronauts = [astronaut["name"] for astronaut in people]
+    # space_crafts = [craft["craft"] for craft in people]
 
     # TODO for loop prints duplicates
-    for astronaut in astronauts:
-        for space_craft in space_crafts:
-            print(f"{astronaut} : {space_craft}")
+    # for astronaut in astronauts:
+    #     for space_craft in space_crafts:
+    #         print(f"{astronaut} : {space_craft}")
 
-    print(f"Total # of astronauts: {total_astronauts}")
+    # print(people)
+    # print(f"Total # of astronauts: {total_astronauts}")
 
 
 def get_coordinates():
@@ -61,26 +69,25 @@ def get_coordinates():
     return f'Latitude: {latitude}\nLongitude: {longitude} Timestamp: {time_stamp}'
 
 
-def create_turtle_graphics(coord):
+def create_turtle_graphics():
     screen = Screen()
     turtle = Turtle()
     setup = screen.setup(width=1000, height=500, startx=0, starty=0)
     title = screen.title("ISS Location")
     bg_graphic = screen.bgpic("map.gif")
-    set_coordinates = [coord.latitude, coord.longitude]
+    # set_coordinates = [coord.latitude, coord.longitude]
     # Must run last
     loop = screen.mainloop()
     turtle_list = [screen, turtle, setup, title,
-                   bg_graphic, set_coordinates, loop]
-    print(turtle_list)
+                   bg_graphic, loop]
+    return turtle_list
 
 
 def main():
-    # print("This is method main")
-    # print(get_astronauts())
-    # print(get_coordinates())
-    coordinates = get_coordinates()
-    print(create_turtle_graphics(coordinates))
+
+    astronauts = get_astronauts()
+
+    print(astronauts)
 
 
 if __name__ == '__main__':
