@@ -29,6 +29,8 @@ __author__ = 'Kevin Blount'
 
 import requests
 from tabulate import tabulate
+from datetime import datetime
+import time
 from turtle import Screen, Turtle
 
 
@@ -42,7 +44,7 @@ def get_astronauts():
     rows = [x.values() for x in people]
     table = tabulate(rows, header)
 
-    return f'{table}\n\nTotal Astronauts: {total_astronauts}'
+    return f'{table}\n\nTotal Astronauts: {total_astronauts}\n'
 
     # List Comprehension of astronauts
     # astronauts = [astronaut["name"] for astronaut in people]
@@ -61,12 +63,12 @@ def get_coordinates():
     url = "http://api.open-notify.org/iss-now.json"
     response = requests.get(url)
     coordinates = response.json()["iss_position"]
-    time_stamp = response.json()["timestamp"]
+    time_stamp = datetime.fromtimestamp(response.json()["timestamp"])
     latitude = coordinates["latitude"]
     longitude = coordinates["longitude"]
     # TODO - Format Timestamp
 
-    return f'Latitude: {latitude}\nLongitude: {longitude} Timestamp: {time_stamp}'
+    return f'Latitude: {latitude}\nLongitude: {longitude} Timestamp: {time_stamp}\n'
 
 
 def create_turtle_graphics():
@@ -86,8 +88,10 @@ def create_turtle_graphics():
 def main():
 
     astronauts = get_astronauts()
+    coordinates = get_coordinates()
 
     print(astronauts)
+    print(coordinates)
 
 
 if __name__ == '__main__':
