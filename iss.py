@@ -54,22 +54,24 @@ def get_coordinates():
     response = requests.get(url)
     coordinates = response.json()["iss_position"]
     time_stamp = response.json()["timestamp"]
-    print(response.text)
-    print(
-        f'Latitude: {coordinates["latitude"]}\nLongitude: {coordinates["longitude"]}')
+    latitude = coordinates["latitude"]
+    longitude = coordinates["longitude"]
     # TODO - Format Timestamp
-    print(f'Timestamp: {time_stamp}')
+
+    return f'Latitude: {latitude}\nLongitude: {longitude} Timestamp: {time_stamp}'
 
 
-def create_turtle_graphics():
+def create_turtle_graphics(coord):
     screen = Screen()
     turtle = Turtle()
     setup = screen.setup(width=1000, height=500, startx=0, starty=0)
     title = screen.title("ISS Location")
     bg_graphic = screen.bgpic("map.gif")
+    set_coordinates = [coord.latitude, coord.longitude]
     # Must run last
     loop = screen.mainloop()
-    turtle_list = [screen, turtle, setup, title, bg_graphic, loop]
+    turtle_list = [screen, turtle, setup, title,
+                   bg_graphic, set_coordinates, loop]
     print(turtle_list)
 
 
@@ -77,7 +79,8 @@ def main():
     # print("This is method main")
     # print(get_astronauts())
     # print(get_coordinates())
-    print(create_turtle_graphics())
+    coordinates = get_coordinates()
+    print(create_turtle_graphics(coordinates))
 
 
 if __name__ == '__main__':
