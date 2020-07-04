@@ -61,17 +61,23 @@ def get_coordinates():
     print(f'Timestamp: {time_stamp}')
 
 
-def create_turtle_graphic():
-    print("Turtle Graphic function")
-    s = turtle.getscreen()
-    print(s)
+def create_turtle_graphics():
+    screen = Screen()
+    turtle = Turtle()
+    setup = screen.setup(width=1000, height=500, startx=0, starty=0)
+    title = screen.title("ISS Location")
+    bg_graphic = screen.bgpic("map.gif")
+    # Must run last
+    loop = screen.mainloop()
+    turtle_list = [screen, turtle, setup, title, bg_graphic, loop]
+    print(turtle_list)
 
 
 def main():
     # print("This is method main")
     # print(get_astronauts())
     # print(get_coordinates())
-    print(create_turtle_graphic())
+    print(create_turtle_graphics())
 
 
 if __name__ == '__main__':
