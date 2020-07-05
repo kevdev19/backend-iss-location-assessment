@@ -35,9 +35,8 @@ import turtle
 
 
 def main():
-
-    url = "http://api.open-notify.org/astros.json"
-    response = requests.get(url)
+    astros_url = "http://api.open-notify.org/astros.json"
+    response = requests.get(astros_url)
     people = response.json()["people"]
     total_astronauts = response.json()["number"]
 
@@ -47,16 +46,17 @@ def main():
 
     print(f'{table}\n\nTotal Astronauts: {total_astronauts}\n')
 
-    url = "http://api.open-notify.org/iss-now.json"
-    response = requests.get(url)
+    iss_now_url = "http://api.open-notify.org/iss-now.json"
+    response = requests.get(iss_now_url)
     coordinates = response.json()["iss_position"]
     time_stamp = response.json()["timestamp"]
-    time_stamp_format = datetime.fromtimestamp(time_stamp)
+    time_stamp_convert = datetime.fromtimestamp(time_stamp)
     latitude = coordinates["latitude"]
     longitude = coordinates["longitude"]
     lat_new = float(latitude)
     long_new = float(longitude)
-    print(f'Latitude: {lat_new} {long_new} Timestamp: {time_stamp_format}')
+    print(
+        f'Latitude: {lat_new} Longitude: {long_new} Timestamp: {time_stamp_convert}')
 
     screen = turtle.Screen()
     screen.setup(width=713, height=353)
@@ -64,7 +64,7 @@ def main():
     screen.register_shape("iss.gif")
     screen.bgpic("map.gif")
 
-    # ISS icon image shape
+    # ISS icon shape
     iss_shape = turtle.Turtle()
     iss_shape.shape("iss.gif")
     iss_shape.setheading(90)
@@ -73,8 +73,6 @@ def main():
     iss_shape.goto(lat_new, long_new)
     # Must run last
     screen.mainloop()
-
-    # ISS Indianapolis, Indiana
 
 
 if __name__ == '__main__':
