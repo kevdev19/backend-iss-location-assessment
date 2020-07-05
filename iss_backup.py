@@ -34,8 +34,7 @@ import time
 import turtle
 
 
-def main():
-
+def get_astronauts():
     url = "http://api.open-notify.org/astros.json"
     response = requests.get(url)
     people = response.json()["people"]
@@ -45,8 +44,22 @@ def main():
     rows = [x.values() for x in people]
     table = tabulate(rows, header)
 
-    print(f'{table}\n\nTotal Astronauts: {total_astronauts}\n')
+    return f'{table}\n\nTotal Astronauts: {total_astronauts}\n'
 
+    # List Comprehension of astronauts
+    # astronauts = [astronaut["name"] for astronaut in people]
+    # space_crafts = [craft["craft"] for craft in people]
+
+    # TODO for loop prints duplicates
+    # for astronaut in astronauts:
+    #     for space_craft in space_crafts:
+    #         print(f"{astronaut} : {space_craft}")
+
+    # print(people)
+    # print(f"Total # of astronauts: {total_astronauts}")
+
+
+def get_coordinates():
     url = "http://api.open-notify.org/iss-now.json"
     response = requests.get(url)
     coordinates = response.json()["iss_position"]
@@ -56,13 +69,19 @@ def main():
     longitude = coordinates["longitude"]
     lat_new = float(latitude)
     long_new = float(longitude)
-    print(f'Latitude: {lat_new} {long_new} Timestamp: {time_stamp_format}')
+
+    return lat_new, long_new, time_stamp_format
+
+
+def create_turtle_graphics():
 
     screen = turtle.Screen()
-    screen.setup(width=713, height=353)
-    screen.setworldcoordinates(-180, -90, 180, 90)
-    screen.register_shape("iss.gif")
-    screen.bgpic("map.gif")
+
+    # Turtle screen setup, graphics, and turtle icon
+    screen_setup = screen.setup(width=713, height=353)
+    world_coord = screen.setworldcoordinates(-180, -90, 180, 90)
+    iss_icon = screen.register_shape("iss.gif")
+    bg_graphic = screen.bgpic("map.gif")
 
     # ISS icon image shape
     iss_shape = turtle.Turtle()
@@ -70,11 +89,25 @@ def main():
     iss_shape.setheading(90)
     iss_shape.penup()
 
-    iss_shape.goto(lat_new, long_new)
+    turtle.goto(-25, -25)
     # Must run last
-    screen.mainloop()
+    loop = screen.mainloop()
+    turtle_list = [screen_setup, world_coord, iss_icon, bg_graphic,
+                   bg_graphic, t_shape, loop]
+    return turtle_list
 
-    # ISS Indianapolis, Indiana
+
+def main():
+
+    astronauts = get_astronauts()
+    # Unpacks return values from get_coordinates() function
+    lat, lon, t_stamp = get_coordinates()
+    coordinates = get_coordinates()
+    turtle_screen = create_turtle_graphics(lat, lon, t_stamp)
+
+    print(astronauts)
+    print(coordinates)
+    print(turtle_screen)
 
 
 if __name__ == '__main__':
