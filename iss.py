@@ -63,35 +63,46 @@ def get_coordinates():
     url = "http://api.open-notify.org/iss-now.json"
     response = requests.get(url)
     coordinates = response.json()["iss_position"]
-    time_stamp = datetime.fromtimestamp(response.json()["timestamp"])
+    time_stamp = response.json()["timestamp"]
+    time_stamp_format = datetime.fromtimestamp(time_stamp)
     latitude = coordinates["latitude"]
     longitude = coordinates["longitude"]
-    # TODO - Format Timestamp
+    lat_new = float(latitude)
+    long_new = float(longitude)
 
-    return f'Latitude: {latitude}\nLongitude: {longitude} Timestamp: {time_stamp}\n'
+    return lat_new, long_new, time_stamp_format
 
 
-def create_turtle_graphics():
+def create_turtle_graphics(lat, lon, t_stamp):
     screen = Screen()
     turtle = Turtle()
-    setup = screen.setup(width=1000, height=500, startx=0, starty=0)
-    title = screen.title("ISS Location")
+    setup = screen.setup(width=713, height=353, startx=0, starty=0)
+    title = screen.title("ISS Locater")
     bg_graphic = screen.bgpic("map.gif")
-    # set_coordinates = [coord.latitude, coord.longitude]
+    turtle_icon = screen.register_shape("iss.gif")
+    t_shape = turtle.shape("iss.gif")
+    screen.reset()
+    screen.setworldcoordinates(-50, -126, 50, 126)
+    turtle.penup()
+    turtle.goto(-25, -25)
     # Must run last
     loop = screen.mainloop()
     turtle_list = [screen, turtle, setup, title,
-                   bg_graphic, loop]
+                   bg_graphic, turtle_icon, t_shape, loop]
     return turtle_list
 
 
 def main():
 
     astronauts = get_astronauts()
+    # Unpacks return values from get_coordinates() function
+    lat, lon, t_stamp = get_coordinates()
     coordinates = get_coordinates()
+    turtle_screen = create_turtle_graphics(lat, lon, t_stamp)
 
     print(astronauts)
     print(coordinates)
+    print(turtle_screen)
 
 
 if __name__ == '__main__':
