@@ -32,13 +32,15 @@ from tabulate import tabulate
 from datetime import datetime
 import time
 import turtle
+import urllib
+import json
 
 
 def main():
     astros_url = "http://api.open-notify.org/astros.json"
-    response = requests.get(astros_url)
-    people = response.json()["people"]
-    total_astronauts = response.json()["number"]
+    astros_response = requests.get(astros_url)
+    people = astros_response.json()["people"]
+    total_astronauts = astros_response.json()["number"]
 
     header = people[0].keys()
     rows = [x.values() for x in people]
@@ -47,9 +49,9 @@ def main():
     print(f'{table}\n\nTotal Astronauts: {total_astronauts}\n')
 
     iss_now_url = "http://api.open-notify.org/iss-now.json"
-    response = requests.get(iss_now_url)
-    coordinates = response.json()["iss_position"]
-    time_stamp = response.json()["timestamp"]
+    iss_now_response = requests.get(iss_now_url)
+    coordinates = iss_now_response.json()["iss_position"]
+    time_stamp = iss_now_response.json()["timestamp"]
     time_stamp_convert = datetime.fromtimestamp(time_stamp)
     latitude = coordinates["latitude"]
     longitude = coordinates["longitude"]
@@ -59,7 +61,7 @@ def main():
         f'Latitude: {lat_new} Longitude: {long_new} Timestamp: {time_stamp_convert}')
 
     screen = turtle.Screen()
-    screen.setup(width=713, height=353)
+    screen.setup(720, 360)
     screen.setworldcoordinates(-180, -90, 180, 90)
     screen.register_shape("iss.gif")
     screen.bgpic("map.gif")
@@ -70,9 +72,29 @@ def main():
     iss_shape.setheading(90)
     iss_shape.penup()
 
-    iss_shape.goto(lat_new, long_new)
+    iss_shape.goto(long_new, lat_new)
     # Must run last
+
+    # Indianapolis, Indiana ISS
+    lat = float(39.7684)
+    lon = float(-86.1581)
+
+    i_iss = turtle.Turtle()
+    i_iss.penup()
+    i_iss.color('yellow')
+    i_iss.goto(lon, lat)
+    i_iss.dot(5)
+    i_iss.hideturtle()
     screen.mainloop()
+
+    iss_pass_url = 'http://api.open-notify.org/iss-pass.json?lat=' + \
+        str(lat) + '&lon=' + str(lon)
+
+    iss_pass_response = urllib.request.urlopen(iss_pass_url)
+    result = json.loads(iss_pass_response.read())
+
+    rise_time = result['response'][1]['risetime']
+    i_iss.write(time.ctime(rise_time))
 
 
 if __name__ == '__main__':
