@@ -96,6 +96,11 @@ def main():
     rise_time = result['response'][1]['risetime']
     i_iss.write(time.ctime(rise_time))
 
+    # TODO - As per recommended by Piero, convert hand-written http query string
+    # Use requests module to handle the query params.
+    # Following resource provided by Piero:
+    # https://requests.readthedocs.io/en/master/user/quickstart/#passing-parameters-in-urls
+
 
 if __name__ == '__main__':
     main()
