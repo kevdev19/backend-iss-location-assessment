@@ -34,6 +34,11 @@ import time
 import turtle
 import urllib
 import json
+import importlib
+import json
+
+importlib.reload(turtle)
+importlib.reload(requests)
 
 
 def main():
@@ -73,7 +78,6 @@ def main():
     iss_shape.penup()
 
     iss_shape.goto(long_new, lat_new)
-    # Must run last
 
     # Indianapolis, Indiana ISS
     lat = float(39.7684)
@@ -85,21 +89,17 @@ def main():
     i_iss.goto(lon, lat)
     i_iss.dot(5)
     i_iss.hideturtle()
+    # Must run last
+
+    # iss_pass_url and response lines provided by Faciliator JT
+    iss_pass_url = "http://api.open-notify.org/iss-pass.json?lat={}&lon={}"
+    iss_pass_response = requests.get(iss_pass_url.format(lat, lon))
+    iss_pass_result = iss_pass_response.json()
+
+    rise_time = iss_pass_result['response'][1]['risetime']
+    rise_time_convert = time.ctime(rise_time)
+    i_iss.write(rise_time_convert)
     screen.mainloop()
-
-    iss_pass_url = 'http://api.open-notify.org/iss-pass.json?lat=' + \
-        str(lat) + '&lon=' + str(lon)
-
-    iss_pass_response = urllib.request.urlopen(iss_pass_url)
-    result = json.loads(iss_pass_response.read())
-
-    rise_time = result['response'][1]['risetime']
-    i_iss.write(time.ctime(rise_time))
-
-    # TODO - As per recommended by Piero, convert hand-written http query string
-    # Use requests module to handle the query params.
-    # Following resource provided by Piero:
-    # https://requests.readthedocs.io/en/master/user/quickstart/#passing-parameters-in-urls
 
 
 if __name__ == '__main__':
